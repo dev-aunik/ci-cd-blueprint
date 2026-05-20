@@ -66,6 +66,13 @@ The workflow does this:
 3. Builds the Docker image.
 4. Pushes `latest` to Docker Hub when code is pushed to `main`.
 
+## Repository Health
+
+- Keep `main` protected from force pushes and deletion.
+- Use pull requests for visible review history.
+- Keep Docker Hub credentials in GitHub repository secrets.
+- Check the Actions tab after every push.
+
 ## Docker Hub Publishing
 
 Add these repository secrets in GitHub:
