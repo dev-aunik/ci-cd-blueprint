@@ -1,0 +1,13 @@
+.git
+.github
+actions-runner
+coverage
+vendor
+.env
+.env.local
+.phpunit.result.cache
+*.log
+README.md
+CONTRIBUTING.md
+SECURITY.md
+CHANGELOG.md
