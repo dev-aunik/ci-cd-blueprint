@@ -1,1 +1,6 @@
 actions-runner/
+.env
+.env.local
+.phpunit.result.cache
+coverage/
+vendor/
