@@ -7,20 +7,14 @@ Small PHP app with Docker and GitHub Actions. Use it as a simple starting point 
 - PHP 8.3 with Apache
 - Docker Compose for local work
 - `/health` endpoint
-- GitHub Actions for linting and Docker builds
-- Optional Docker Hub push
-- Basic project files: license, changelog, security policy, and templates
+- GitHub Actions for checking and publishing the Docker image
 
 ## Files
 
 ```text
 .
 ├── .github/
-│   ├── ISSUE_TEMPLATE/
-│   ├── workflows/
-│   └── dependabot.yml
-├── docs/
-├── scripts/
+│   └── workflows/
 ├── src/
 ├── Dockerfile
 ├── docker-compose.yml
@@ -61,7 +55,6 @@ make up         # Start the app
 make down       # Stop the app
 make logs       # Follow container logs
 make lint       # Run PHP syntax checks in Docker
-make smoke      # Run a local HTTP smoke test
 ```
 
 ## CI/CD
@@ -71,7 +64,7 @@ The workflow does this:
 1. Checks PHP syntax.
 2. Validates the Docker Compose file.
 3. Builds the Docker image.
-4. Pushes the image to Docker Hub if secrets are set.
+4. Pushes `latest` to Docker Hub when code is pushed to `main`.
 
 ## Docker Hub Publishing
 
@@ -91,11 +84,6 @@ Update the image name in `.github/workflows/ci.yml` if you want to publish to a 
 - [ ] Change the Docker image name in `.github/workflows/ci.yml`.
 - [ ] Add Docker Hub secrets in GitHub.
 - [ ] Push to GitHub and check the Actions tab.
-
-## More Docs
-
-- [Deployment Guide](docs/deployment.md)
-- [CI/CD Strategy](docs/ci-cd-strategy.md)
 
 ## License
 

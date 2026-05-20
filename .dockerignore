@@ -7,7 +7,3 @@ vendor
 .env.local
 .phpunit.result.cache
 *.log
-README.md
-CONTRIBUTING.md
-SECURITY.md
-CHANGELOG.md
