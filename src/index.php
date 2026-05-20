@@ -110,8 +110,8 @@ header('Content-Type: text/html; charset=UTF-8');
 <main>
     <h1><?= htmlspecialchars($appName, ENT_QUOTES, 'UTF-8') ?></h1>
     <p>
-        A containerized PHP service prepared for professional CI/CD demonstrations,
-        pull request validation, Docker image publishing, and release smoke checks.
+        A small PHP service for testing Docker builds, GitHub Actions,
+        image publishing, and simple health checks.
     </p>
     <dl>
         <dt>Environment</dt>

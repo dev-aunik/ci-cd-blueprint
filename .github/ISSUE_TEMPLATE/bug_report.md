@@ -1,6 +1,6 @@
 ---
 name: Bug report
-about: Report a reproducible issue in the blueprint
+about: Report a bug
 title: "bug: "
 labels: bug
 assignees: ""
@@ -25,4 +25,3 @@ assignees: ""
 - Docker Compose version:
 
 ## Logs or screenshots
-

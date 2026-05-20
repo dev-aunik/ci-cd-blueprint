@@ -1,6 +1,6 @@
 # Deployment Guide
 
-This project publishes a Docker image that can be deployed to any container platform.
+This app runs as a Docker container. You can run it locally or pull the image from Docker Hub after CI publishes it.
 
 ## Local Deployment
 
@@ -20,7 +20,7 @@ Health check:
 http://localhost:8080/health
 ```
 
-## Docker Hub Deployment
+## Docker Hub
 
 Pull the latest image:
 
@@ -37,16 +37,16 @@ docker run --rm -p 8080:80 \
   devmehedi/ci-cd-blueprint:latest
 ```
 
-## Production Checklist
+## Checklist
 
 - [ ] Use a dedicated Docker Hub access token.
 - [ ] Configure GitHub repository secrets.
 - [ ] Protect the `main` branch.
-- [ ] Confirm `/health` responds before routing traffic.
+- [ ] Check `/health` before sending traffic to the container.
 - [ ] Keep deployment credentials outside the repository.
 - [ ] Roll back by redeploying the previous SHA-tagged image.
 
-## Rollback Example
+## Rollback
 
 ```bash
 docker pull devmehedi/ci-cd-blueprint:sha-previous

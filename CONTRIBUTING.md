@@ -1,8 +1,8 @@
 # Contributing
 
-Thank you for improving this CI/CD blueprint. Keep changes practical, documented, and easy for another developer to adopt.
+Keep changes small and easy to review.
 
-## Development Workflow
+## Workflow
 
 1. Create a branch from `main`.
 2. Make a focused change.
@@ -14,7 +14,7 @@ make build
 make smoke
 ```
 
-4. Open a pull request with a short summary and test notes.
+4. Open a pull request.
 
 ## Commit Style
 
@@ -23,12 +23,12 @@ Use small, meaningful commits. Good examples:
 ```text
 docs: add deployment guide
 ci: publish docker image from main
-docker: add production-ready container defaults
+docker: update container settings
 ```
 
 ## Pull Request Checklist
 
-- [ ] The change is focused and easy to review.
+- [ ] The change is focused.
 - [ ] Documentation is updated when behavior changes.
 - [ ] Local checks pass.
 - [ ] Secrets or credentials are not committed.

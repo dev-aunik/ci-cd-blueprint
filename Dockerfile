@@ -3,7 +3,7 @@ FROM php:8.3-apache
 ARG APP_VERSION=0.1.0
 
 LABEL org.opencontainers.image.title="CI/CD Blueprint" \
-      org.opencontainers.image.description="Containerized PHP service for CI/CD demonstrations" \
+      org.opencontainers.image.description="Small PHP service with Docker and GitHub Actions" \
       org.opencontainers.image.version="${APP_VERSION}" \
       org.opencontainers.image.source="https://github.com/dev-aunik/ci-cd-blueprint"
 

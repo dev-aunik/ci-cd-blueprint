@@ -1,14 +1,11 @@
 # Changelog
 
-All notable changes to this project will be documented in this file.
-
-The format is inspired by Keep a Changelog, and this project uses semantic versioning.
+Notable changes are listed here.
 
 ## [Unreleased]
 
 ### Added
 
-- Professional README with setup, CI/CD, and implementation guidance.
-- MIT license, contribution guide, security policy, and project documentation.
+- README, license, contribution guide, security policy, and docs.
 - Dockerized PHP demo app with health endpoint and local helper commands.
-- GitHub Actions workflow for linting, container validation, and Docker Hub publishing.
+- GitHub Actions workflow for linting, Docker validation, and Docker Hub publishing.

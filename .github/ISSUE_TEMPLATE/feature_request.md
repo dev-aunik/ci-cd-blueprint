@@ -1,6 +1,6 @@
 ---
 name: Feature request
-about: Suggest an improvement to the CI/CD blueprint
+about: Suggest an improvement
 title: "feat: "
 labels: enhancement
 assignees: ""
@@ -16,4 +16,3 @@ assignees: ""
 
 
 ## Implementation notes
-
