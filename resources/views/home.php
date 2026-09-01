@@ -2,31 +2,15 @@
 
 declare(strict_types=1);
 
-$appName = getenv('APP_NAME') ?: 'CI/CD Blueprint';
-$environment = getenv('APP_ENV') ?: 'local';
-$version = getenv('APP_VERSION') ?: '0.1.0';
-$path = parse_url($_SERVER['REQUEST_URI'] ?? '/', PHP_URL_PATH) ?: '/';
-
-if ($path === '/health') {
-    header('Content-Type: application/json');
-    echo json_encode([
-        'status' => 'ok',
-        'service' => $appName,
-        'environment' => $environment,
-        'version' => $version,
-        'timestamp' => gmdate('c'),
-    ], JSON_PRETTY_PRINT);
-    exit;
-}
-
-header('Content-Type: text/html; charset=UTF-8');
+/** @var \Blueprint\Config $config */
+$e = static fn (string $v): string => htmlspecialchars($v, ENT_QUOTES, 'UTF-8');
 ?>
 <!doctype html>
 <html lang="en">
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title><?= htmlspecialchars($appName, ENT_QUOTES, 'UTF-8') ?></title>
+    <title><?= $e($config->name) ?></title>
     <style>
         :root {
             color-scheme: light dark;
@@ -49,9 +33,7 @@ header('Content-Type: text/html; charset=UTF-8');
             }
         }
 
-        * {
-            box-sizing: border-box;
-        }
+        * { box-sizing: border-box; }
 
         body {
             margin: 0;
@@ -91,9 +73,7 @@ header('Content-Type: text/html; charset=UTF-8');
             margin: 28px 0 0;
         }
 
-        dt {
-            color: var(--muted);
-        }
+        dt { color: var(--muted); }
 
         dd {
             margin: 0;
@@ -108,16 +88,16 @@ header('Content-Type: text/html; charset=UTF-8');
 </head>
 <body>
 <main>
-    <h1><?= htmlspecialchars($appName, ENT_QUOTES, 'UTF-8') ?></h1>
+    <h1><?= $e($config->name) ?></h1>
     <p>
-        A small PHP service for testing Docker builds, GitHub Actions,
-        image publishing, and simple health checks.
+        A small PHP service for exercising Docker builds, GitHub Actions,
+        image publishing, and health checks.
     </p>
     <dl>
         <dt>Environment</dt>
-        <dd><?= htmlspecialchars($environment, ENT_QUOTES, 'UTF-8') ?></dd>
+        <dd><?= $e($config->environment) ?></dd>
         <dt>Version</dt>
-        <dd><?= htmlspecialchars($version, ENT_QUOTES, 'UTF-8') ?></dd>
+        <dd><?= $e($config->version) ?></dd>
         <dt>Health</dt>
         <dd><a href="/health">/health</a></dd>
     </dl>

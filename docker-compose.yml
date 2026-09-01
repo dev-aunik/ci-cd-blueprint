@@ -1,7 +1,11 @@
 services:
   app:
-    build: .
+    build:
+      context: .
+      target: runtime
+    image: ${DOCKER_IMAGE:-ci-cd-blueprint}:local
     container_name: ci-cd-blueprint
+    restart: unless-stopped
     ports:
       - "${APP_PORT:-8080}:80"
     environment:
@@ -9,9 +13,11 @@ services:
       APP_ENV: "${APP_ENV:-local}"
       APP_VERSION: "${APP_VERSION:-0.1.0}"
     volumes:
-      - ./src:/var/www/html
+      - ./public:/var/www/html/public:ro
+      - ./src:/var/www/html/src:ro
+      - ./resources:/var/www/html/resources:ro
     healthcheck:
-      test: ["CMD", "curl", "--fail", "http://localhost/health"]
+      test: ["CMD", "curl", "--fail", "--silent", "http://localhost/health"]
       interval: 30s
       timeout: 5s
       retries: 3
