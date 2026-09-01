@@ -1,0 +1,27 @@
+name: Improvement
+description: Suggest something the blueprint should demonstrate.
+labels: [enhancement, needs-triage]
+body:
+  - type: textarea
+    id: problem
+    attributes:
+      label: What is missing
+      description: What does the blueprint fail to show, and who does that affect?
+    validations:
+      required: true
+
+  - type: textarea
+    id: proposal
+    attributes:
+      label: Proposed change
+    validations:
+      required: true
+
+  - type: checkboxes
+    id: scope
+    attributes:
+      label: Scope check
+      description: This repository stays deliberately small.
+      options:
+        - label: This can be explained in a handful of files, without adding a framework.
+          required: true
