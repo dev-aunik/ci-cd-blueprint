@@ -1,6 +1,15 @@
 actions-runner/
+vendor/
+
 .env
 .env.local
+
 .phpunit.result.cache
+.php-cs-fixer.cache
+.phpstan.cache/
 coverage/
-vendor/
+build/
+
+*.log
+.DS_Store
+Thumbs.db
