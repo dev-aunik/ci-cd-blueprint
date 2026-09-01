@@ -1,0 +1,58 @@
+name: Bug report
+description: Something in the blueprint does not behave as documented.
+labels: [bug, needs-triage]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Please do not report security vulnerabilities here.
+        Use a private advisory instead, as described in SECURITY.md.
+
+  - type: textarea
+    id: what-happened
+    attributes:
+      label: What happened
+      description: What did you observe, and what did you expect instead?
+      placeholder: The build job fails at the smoke test step with a 500 response.
+    validations:
+      required: true
+
+  - type: textarea
+    id: reproduce
+    attributes:
+      label: Steps to reproduce
+      value: |
+        1.
+        2.
+        3.
+    validations:
+      required: true
+
+  - type: input
+    id: version
+    attributes:
+      label: Version or commit
+      description: The tag or commit SHA you are running.
+      placeholder: v1.2.0 or 3f6a8d7
+    validations:
+      required: true
+
+  - type: dropdown
+    id: surface
+    attributes:
+      label: Where does it fail
+      options:
+        - Local composer run (lint, analyse or test)
+        - Local Docker or compose
+        - GitHub Actions CI workflow
+        - GitHub Actions release workflow
+        - Documentation only
+    validations:
+      required: true
+
+  - type: textarea
+    id: logs
+    attributes:
+      label: Relevant output
+      description: Paste the failing output. It is rendered as a code block, no backticks needed.
+      render: shell
