@@ -18,7 +18,7 @@
     },
     "autoload-dev": {
         "psr-4": {
-            "Blueprint\Tests\\": "tests/"
+            "Blueprint\\Tests\\": "tests/"
         }
     },
     "scripts": {
