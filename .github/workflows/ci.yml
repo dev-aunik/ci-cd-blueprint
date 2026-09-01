@@ -5,42 +5,131 @@ on:
     branches: [main]
   pull_request:
     branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ci-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
 
 env:
-  DOCKER_IMAGE: devmehedi/ci-cd-blueprint
+  PHP_DEFAULT: "8.3"
+  IMAGE_TAG: ci-cd-blueprint:ci
 
 jobs:
-  build:
+  style:
+    name: Code style
     runs-on: ubuntu-latest
-
+    timeout-minutes: 10
     steps:
       - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Check PHP syntax
+      - name: Set up PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: ${{ env.PHP_DEFAULT }}
+          coverage: none
+          tools: composer:v2
+
+      - name: Install dependencies
+        uses: ramsey/composer-install@v3
+
+      - name: Check formatting
+        run: composer run lint
+
+  static-analysis:
+    name: Static analysis
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: ${{ env.PHP_DEFAULT }}
+          coverage: none
+          tools: composer:v2
+
+      - name: Install dependencies
+        uses: ramsey/composer-install@v3
+
+      - name: Run PHPStan
+        run: composer run analyse
+
+  test:
+    name: Tests (PHP ${{ matrix.php }})
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    strategy:
+      fail-fast: false
+      matrix:
+        php: ["8.2", "8.3", "8.4"]
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: ${{ matrix.php }}
+          coverage: none
+          tools: composer:v2
+
+      - name: Install dependencies
+        uses: ramsey/composer-install@v3
+
+      - name: Run tests
+        run: composer run test
+
+  build:
+    name: Docker build and smoke test
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    needs: [style, static-analysis, test]
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Validate compose file
+        run: docker compose config --quiet
+
+      - name: Set up Buildx
+        uses: docker/setup-buildx-action@v3
+
+      - name: Build image
+        uses: docker/build-push-action@v6
+        with:
+          context: .
+          target: runtime
+          load: true
+          tags: ${{ env.IMAGE_TAG }}
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
+
+      - name: Smoke test the running container
         run: |
-          docker run --rm \
-            -v "$PWD/src:/app:ro" \
-            -w /app \
-            php:8.3-cli \
-            sh -c 'find . -name "*.php" -print -exec php -l {} \;'
+          docker run --detach --name blueprint --publish 8080:80 "$IMAGE_TAG"
 
-      - name: Check Docker Compose
-        run: docker compose config
+          for attempt in $(seq 1 30); do
+            if curl --fail --silent http://localhost:8080/health >/dev/null; then
+              echo "Container healthy after ${attempt} attempt(s)."
+              break
+            fi
+            sleep 2
+          done
 
-      - name: Build Docker image
-        run: docker build -t $DOCKER_IMAGE:latest .
+          curl --fail --silent http://localhost:8080/health | tee /dev/stderr | grep -q '"status": "ok"'
+          curl --fail --silent --output /dev/null --write-out '%{http_code}\n' http://localhost:8080/
 
-      - name: Push Docker image
-        if: github.ref == 'refs/heads/main' && github.event_name == 'push'
-        env:
-          DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
-          DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
-        run: |
-          if [ -z "$DOCKER_USERNAME" ] || [ -z "$DOCKER_PASSWORD" ]; then
-            echo "Docker Hub secrets not set. Skipping push."
-            exit 0
-          fi
+      - name: Dump container logs on failure
+        if: failure()
+        run: docker logs blueprint || true
 
-          echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
-          docker push $DOCKER_IMAGE:latest
+      - name: Stop container
+        if: always()
+        run: docker rm --force blueprint || true
