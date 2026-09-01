@@ -7,5 +7,7 @@ use Blueprint\Router;
 
 require_once dirname(__DIR__).'/vendor/autoload.php';
 
+$uri = $_SERVER['REQUEST_URI'] ?? '/';
+
 $router = new Router(Config::fromEnvironment());
-$router->resolve($_SERVER['REQUEST_URI'] ?? '/')->send();
+$router->resolve(is_string($uri) ? $uri : '/')->send();
