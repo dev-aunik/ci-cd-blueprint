@@ -1,0 +1,7 @@
+# Default owner for everything in the repository.
+*                       @dev-aunik
+
+# Pipeline and supply-chain surfaces warrant a closer look.
+/.github/workflows/     @dev-aunik
+/Dockerfile             @dev-aunik
+/docker-compose.yml     @dev-aunik
