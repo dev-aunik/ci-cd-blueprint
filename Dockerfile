@@ -9,7 +9,7 @@ RUN composer install \
         --no-scripts \
         --optimize-autoloader
 
-FROM php:8.3-apache AS runtime
+FROM php:8.6-apache AS runtime
 
 LABEL org.opencontainers.image.title="CI/CD Blueprint" \
       org.opencontainers.image.description="Reference CI/CD pipeline for a containerised PHP service." \
